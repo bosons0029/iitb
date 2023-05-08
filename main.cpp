@@ -23,17 +23,17 @@ class VideoCaptureApp:public wxApp {
 		void drawFrame();
 		void OnStart(wxCommandEvent& event);
 		void OnStop(wxCommandEvent& event);
-		void brightness_changed(wxCommandEvent& event);
-		void contrast_changed(wxCommandEvent& event);
+		void brightness_changed(wxScrollEvent& event);
+		void contrast_changed(wxScrollEvent& event);
 };
 
 wxIMPLEMENT_APP(VideoCaptureApp);
 
-void VideoCaptureApp::brightness_changed(wxCommandEvent& event) {
+void VideoCaptureApp::brightness_changed(wxScrollEvent& event) {
       this->brightness = this->brightness_slider->GetValue();
 }
 
-void VideoCaptureApp::contrast_changed(wxCommandEvent& event) {
+void VideoCaptureApp::contrast_changed(wxScrollEvent& event) {
       this->contrast = this->contrast_slider->GetValue();
 }
 
@@ -56,11 +56,15 @@ void VideoCaptureApp::OnStart(wxCommandEvent& event) {
 		return;
 	}
 	this->running = true;
+        Mat stream1;
+        Mat stream2;
 	while (this->running) {
 		win1 >> stream;
 		if (stream.empty()) {
 			break;
 		}
+                stream.convertTo(stream1, -1, 1, this->brightness);
+                stream1.convertTo(stream2, -1, this->contrast/10.0, 0);
 		imshow("Video Stream", stream);
 		char c = (char)waitKey(35);
 		if (c == 27) { //Esc
@@ -108,15 +112,15 @@ bool VideoCaptureApp::OnInit() {
 		pos = new wxPoint(15, 215);
 		wxSlider* brightness_slider = new wxSlider(frame, wxID_ANY, 25, 0, 50, *pos, wxSize(300, 20), wxSL_HORIZONTAL, wxDefaultValidator, "Brightness");
                 this->brightness_slider = brightness_slider;
-                brightness_slider->Bind(wxEVT_SCROLL_CHANGED, &VideoCaptureApp::brightness_changed, this);
+                brightness_slider->Bind(wxEVT_SCROLL_THUMBRELEASE, &VideoCaptureApp::brightness_changed, this);
 		this->brightness = brightness_slider->GetValue();
 		delete pos;
 		pos = new wxPoint(15, 355);
 		wxStaticText* contrast_label = new wxStaticText(frame, wxID_ANY, "Contrast", *pos, wxDefaultSize, 0, "Contrast"); 
 		delete pos;
 		pos = new wxPoint(15,385);
-		wxSlider* contrast_slider = new wxSlider(frame, wxID_ANY, 25, 0, 50, *pos, wxSize(300, 20), wxSL_HORIZONTAL, wxDefaultValidator, "Contrast");
-                contrast_slider->Bind(wxEVT_SCROLL_CHANGED, &VideoCaptureApp::contrast_changed, this);
+		wxSlider* contrast_slider = new wxSlider(frame, wxID_ANY, 5, 0, 10, *pos, wxSize(300, 20), wxSL_HORIZONTAL, wxDefaultValidator, "Contrast");
+                contrast_slider->Bind(wxEVT_SCROLL_THUMBRELEASE, &VideoCaptureApp::contrast_changed, this);
 		this->contrast = contrast_slider->GetValue();
                 this->contrast_slider = contrast_slider;
 		delete pos;
