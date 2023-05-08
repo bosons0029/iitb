@@ -1,1 +1,1 @@
- g++ main.cpp `wx-config --cxxflags` `wx-config --libs` -std=c++0x
+ g++ main.cpp `pkg-config --cflags opencv4` `pkg-config --libs opencv4` `wx-config --cxxflags` `wx-config --libs` -std=c++0x
