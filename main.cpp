@@ -65,7 +65,7 @@ void VideoCaptureApp::OnStart(wxCommandEvent& event) {
 		}
                 stream.convertTo(stream1, -1, 1, this->brightness);
                 stream1.convertTo(stream2, -1, this->contrast/10.0, 0);
-		imshow("Video Stream", stream);
+		imshow("Video Stream", stream2);
 		char c = (char)waitKey(35);
 		if (c == 27) { //Esc
 			break;
