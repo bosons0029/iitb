@@ -1,7 +1,3 @@
-#include <opencv2/core.hpp>
-#include <opencv2/videoio.hpp>
-#include <opencv2/highgui.hpp>
-#include <iostream>
 #include <wx/wx.h>
 #include <wx/slider.h>
 #include <wx/choice.h>
@@ -9,44 +5,21 @@
 #include <wx/animate.h>
 #include <wx/math.h>
 #include <wx/gdicmn.h>
+#include "capture.hpp"
 using namespace std;
 using namespace cv;
 
 class VideoCaptureApp:public wxApp {
     public:
         bool OnInit();
+        void drawFrame();
         void OnStart(wxCommandEvent& event);
-//        wxDECLARE_EVENT_TABLE();
 };
 
 wxIMPLEMENT_APP(VideoCaptureApp);
 
 void VideoCaptureApp::OnStart(wxCommandEvent& event) {
-    //Video Capture begins
-    Mat stream;
-    namedWindow("Video Stream");
-    VideoCapture win1(0);
-    int deviceID = 0;
-    int apiID = cv::CAP_ANY;
-    win1.open(deviceID, apiID);
-    if (!win1.isOpened()) {
-         cout << "No video stream detected\n";
-         system("pause");
-         return;
-    }
-    while (1) {
-         win1 >> stream;
-         if (stream.empty()) {
-              break;
-         }
-         imshow("Video Stream", stream);
-         char c = (char)waitKey(35);
-         if (c == 27) { //Esc
-              break;
-         }
-     }
-     win1.release();
-     return;
+    capture();
 }
 
 bool VideoCaptureApp::OnInit() {
@@ -84,4 +57,3 @@ bool VideoCaptureApp::OnInit() {
     wxAnimationCtrl* video_stream = new wxAnimationCtrl(frame, wxID_ANY, wxNullAnimation, *pos, size, wxAC_DEFAULT_STYLE, "Video Stream");
      return true;
 }
-
