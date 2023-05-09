@@ -1,0 +1,11 @@
+To Build:
+make clean
+make
+
+Usage:
+./part2 images
+
+This is a partial submission only.
+
+The deep learning model to inference blank images is missing.
+I have done edge detection here only where the user can manually detect blank images.

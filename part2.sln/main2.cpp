@@ -15,6 +15,8 @@ int main(int argc, char* argv[]) {
         struct dirent* entry;
 	char* dir = strdup(argv[1]);
         DIR* dp = opendir(dir);
+        //Iterate over image directory
+        //assuming all files are images to be analyzed
 	while ((entry = readdir(dp))) {
 		std::cout << entry->d_name << std::endl;
                 if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
@@ -24,9 +26,12 @@ continue;
                 img_path = img_path + "/" + entry->d_name;
 		Mat img = imread(img_path, 0);
 		Mat img_blur;
+                //preprocessing using Gaussian Blur
 		GaussianBlur(img, img_blur, Size(3,3), 0);
 		Mat edges;
+                //Canny Edge detection
 		Canny(img_blur, edges, 100, 200, 3, false);
+                //TBD: Deep Learning Blank Image Detection here
 	}
 	return 0;
 }  
