@@ -1,0 +1,12 @@
+Part 1:
+A Video Capture Solution with Brightness and Contrast Sliders
+Usage:
+cd part1.sln
+./part1
+
+Part 2:
+Image Classification based on edge detection.
+Used Gaussian Blur, Canny Edge Detection. Deep Learning in the purview of C++ is out of my knowledge at present. So this is a partial submission only. Used dirent.h in C to get directory listing
+Usage:
+cd part2.sln
+./part2
