@@ -14,7 +14,12 @@ using namespace cv;
 
 class VideoCaptureApp:public wxApp {
 	public:
+                //This variable is manipluated 
+                //when stopping a video capture stream
 		bool running;
+                //these variables are used to store
+                //brightness and contrast levels on the
+                //fly
 		double brightness;
 		double contrast;
                 wxSlider* brightness_slider;
@@ -29,19 +34,23 @@ class VideoCaptureApp:public wxApp {
 
 wxIMPLEMENT_APP(VideoCaptureApp);
 
+//Event binding when brightness slider is changed
 void VideoCaptureApp::brightness_changed(wxScrollEvent& event) {
       this->brightness = this->brightness_slider->GetValue();
 }
 
+//Event binding when contrast slider is changed
 void VideoCaptureApp::contrast_changed(wxScrollEvent& event) {
       this->contrast = this->contrast_slider->GetValue();
 }
 
+//Event binding when stop button is pressed
 void VideoCaptureApp::OnStop(wxCommandEvent& event) {
 	this->running = false;
 	destroyWindow("Video Stream");
 }
 
+//Event binding when start button is pressed
 void VideoCaptureApp::OnStart(wxCommandEvent& event) {
 	//Video Capture begins
 	Mat stream;
@@ -58,6 +67,11 @@ void VideoCaptureApp::OnStart(wxCommandEvent& event) {
 	this->running = true;
         Mat stream1;
         Mat stream2;
+        //Loop to render multiple video frames
+        //giving a feel of streaming
+        //while also manipulating
+        //the brightness and contrast
+        //until killed by the stop button
 	while (this->running) {
 		win1 >> stream;
 		if (stream.empty()) {
@@ -76,6 +90,8 @@ void VideoCaptureApp::OnStart(wxCommandEvent& event) {
 }
 
 bool VideoCaptureApp::OnInit() {
+        //The frontend or UI aspects of the Application
+        //implemented in wxWidgets - Cross Platform
 	wxSize window_size(350, 600);
 	wxFrame* frame = new wxFrame(nullptr, wxID_ANY, "Video Capture App", wxDefaultPosition, window_size, wxDEFAULT_FRAME_STYLE, "Video Capture App");
 	frame->Show(true);

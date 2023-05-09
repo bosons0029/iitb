@@ -1,0 +1,9 @@
+To Build:
+make clean
+make
+
+Usage:
+./part1
+
+This is a video capture app with Brightness and Contrast Sliders
+to capture live video
